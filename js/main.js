@@ -86,6 +86,29 @@ function stopScroll() {
   document.documentElement.classList.add('fixed')
 }
 
+// 헤더 메뉴 토글! [모바일]
+const menuStarterEl = document.querySelector('header .menu-starter')
+menuStarterEl.addEventListener('click', () => {
+  if (headerEl.classList.contains('menuing')) {
+    headerEl.classList.remove('menuing')
+    searchInputEl.value = ''
+    playScroll()
+  } else {
+    headerEl.classList.add('menuing')
+    stopScroll()
+  }
+})
+
+// 헤더 검색! [모바일]
+const searchTextFieldEl = document.querySelector('header .textfield')
+const searchCancelEl = document.querySelector('header .search-canceler')
+searchTextFieldEl.addEventListener('click', () => {
+  headerEl.classList.add('searching--mobile')
+  searchInputEl.focus()
+})
+searchCancelEl.addEventListener('click', () => {
+  headerEl.classList.remove('searching--mobile')
+})
 
 // 화면 크기가 달라졌을 때 검색 모드가 종료되도록 처리.
 window.addEventListener('resize', event => {
@@ -95,6 +118,30 @@ window.addEventListener('resize', event => {
     headerEl.classList.remove('searching--mobile')
   }
 })
+
+
+// 네비게이션 메뉴 토글! [모바일]
+const navEl = document.querySelector('nav')
+const navMenuToggleEl = navEl.querySelector('.menu-toggler')
+const navMenuShadowEl = navEl.querySelector('.shadow')
+navMenuToggleEl.addEventListener('click', () => {
+  if (navEl.classList.contains('menuing')) {
+    hideNavMenu()
+  } else {
+    showNavMenu()
+  }
+})
+navEl.addEventListener('click', event => {
+  event.stopPropagation()
+})
+navMenuShadowEl.addEventListener('click', hideNavMenu)
+window.addEventListener('click', hideNavMenu)
+function showNavMenu() {
+  navEl.classList.add('menuing')
+}
+function hideNavMenu() {
+  navEl.classList.remove('menuing')
+}
 
 
 // 요소의 가시성 관찰 로직!
@@ -192,13 +239,20 @@ navigations.forEach(nav => {
   navigationsEl.append(mapEl)
 })
 
-//푸터 카피라이터 년도갱신
-const thisYearEl = document.querySelector('span.this-year')
+
+// 올해 연도를 적용!
+const thisYearEl = document.querySelector('.this-year')
 thisYearEl.textContent = new Date().getFullYear()
 
 
-
-
+// 푸터 내비게이션 맵 아코디언
+const mapEls = [...document.querySelectorAll('footer .navigations .map')]
+mapEls.forEach(el => {
+  const h3El = el.querySelector('h3')
+  h3El.addEventListener('click', () => {
+    el.classList.toggle('active')
+  })
+})
 
 //새로고침시 최상단 이동 스크립트
 
